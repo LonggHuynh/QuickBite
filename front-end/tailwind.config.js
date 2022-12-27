@@ -50,6 +50,7 @@ module.exports = {
         secondaryOpposite:"#EEF0F2",
         neutral:"#ECEBE4",
       },
+
     },
   },
   plugins: [require("tailwind-scrollbar")],

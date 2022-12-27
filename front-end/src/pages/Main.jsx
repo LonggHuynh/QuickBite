@@ -9,18 +9,18 @@ const Main = () => {
                 <div className='filterItem'>
                     <p className='text-2xl mb-3 font-semibold'>Min Order</p>
                     <div className='inputItem mb-2'>
-                        <input type='radio' id='asc' value="asc" name='price' />
+                        <input type='radio' id='10' value="10" name='price' />
                         <label className='ml-3' htmlFor='asc'> $10</label>
                     </div>
 
                     <div className='inputItem mb-2' >
-                        <input type='radio' id='desc' value="desc" name='price' />
+                        <input type='radio' id='20' value="20" name='price' />
                         <label className='ml-3' htmlFor='desc'> $20 </label>
                     </div>
 
                     <div className='inputItem mb-2' >
-                        <input type='radio' id='desc' value="desc" name='price' />
-                        <label className='ml-3' htmlFor='desc'> All</label>
+                        <input type='radio' id='all' value="0" name='price' />
+                        <label className='ml-3' htmlFor='all'> All</label>
                     </div>
                 </div>
 
