@@ -38,7 +38,7 @@ const Restaurant = () => {
           <Category />
         </div>
       </div>
-      <div className=' basket bg-primaryOpposite grow-0 shrink-0 basis-[500px] px-9 pt-10 pb-20 flex flex-col h-[calc(100vh-80px)] drop-shadow-lg'>
+      <div className=' basket sticky top-20 bg-primaryOpposite grow-0 shrink-0 basis-[450px] px-9 pt-10 pb-20 flex flex-col h-[calc(100vh-80px)] drop-shadow-lg'>
 
         <p className='self-center text-4xl font-semibold'>Basket</p>
         <div className="itemsContainer flex flex-col gap-8">
