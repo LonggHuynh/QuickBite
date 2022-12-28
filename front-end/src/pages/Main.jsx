@@ -1,11 +1,27 @@
 import React from 'react'
 import RestaurantCard from '../components/RestaurantCard'
 import SearchIcon from '@mui/icons-material/Search';
+import { Switch } from '@mui/material';
+import { useState } from 'react';
 const Main = () => {
+    const [isDeliveryFree, setIsDeliveryFree] = useState(false)
+
     return (
         <div className='mainContainer flex'>
-            <div className="sideBar bg-secondary flex-1 px-10 py-14 sticky top-9 h-full flex flex-col gap-10">
-                <p className='text-2xl font-semibold'>752 restaurants</p>
+            <div className="sideBar bg-primaryOpposite flex-1 px-10 py-14 sticky top-20 flex flex-col gap-10 drop-shadow-lg  h-[calc(100vh-80px)]">
+                <p className='text-xl '>752 restaurants</p>
+
+
+
+                <div className='filterItem'>
+                    <p className='text-2xl mb-3 font-semibold'>Free     Delivery</p>
+                    <Switch
+                        checked={isDeliveryFree}
+                        onChange={() => setIsDeliveryFree(prev => !prev)}
+                        inputProps={{ 'aria-label': 'controlled' }}
+                    />
+                </div>
+
                 <div className='filterItem'>
                     <p className='text-2xl mb-3 font-semibold'>Min Order</p>
                     <div className='inputItem mb-2'>
@@ -27,6 +43,20 @@ const Main = () => {
 
                 <div className='filterItem'>
                     <p className='text-2xl mb-3 font-semibold'>Rating</p>
+                    {
+
+                        [...Array(5).keys()].map((_, ind) => {
+                            console.log(ind)
+                            return (
+                                <div className='inputItem mb-2'>
+                                    <input type='radio' id={`start${ind}`} value={ind + 1} name='price' />
+                                    <label className='ml-3' htmlFor={`start${ind}`} > {ind + 1}</label>
+                                </div>
+                            )
+                        }
+
+                        )
+                    }
 
                 </div>
             </div>
@@ -45,7 +75,7 @@ const Main = () => {
                         <select
                             className="outline-none w-full bg-white p-4 cursor-pointer"
                         >
-                            <option value="other"  className="bg-white">
+                            <option value="other" className="bg-white">
                                 Highest rating
                             </option>
                         </select>
@@ -53,10 +83,10 @@ const Main = () => {
                     </div>
                 </div>
 
-                <div className='mt-5'>
-                    <p className='text-2xl font-semibold'>752 restaurants</p>
+                <div className='mt-10'>
+                    <p className='text-xl'>752 restaurants</p>
                 </div>
-                <div className="cardGrid grid grid-cols-2 gap-12 mt-10">
+                <div className="cardGrid grid grid-cols-2 gap-12 mt-5">
                     <RestaurantCard />
                     <RestaurantCard />
                     <RestaurantCard />

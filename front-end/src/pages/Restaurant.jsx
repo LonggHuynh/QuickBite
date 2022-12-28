@@ -1,10 +1,10 @@
 import React from 'react'
-import CartItem from '../components/CartItem'
-import Category from '../components/Category'
 
+import Category from '../components/Category'
+import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
-
+import Basket from '../components/Basket';
 const Restaurant = () => {
 
   const rating = 4.5
@@ -21,12 +21,12 @@ const Restaurant = () => {
             <div className='flex mt-auto'>
 
               {
-                [...Array(5).keys()].map(val=>val+0.5<=rating?<StarIcon />:<StarBorderIcon />)
+                [...Array(5).keys()].map(val => val + 0.5 <= rating ? <StarIcon /> : <StarBorderIcon />)
               }
               <span className='ml-1'> (500)</span>
-              
+
             </div>
-            <p className='text'>Min. $2.5  Delivery fee: $2.5</p>
+            <p className='text'>Min. $2.5  <span className='ml-3'><DeliveryDiningIcon />.</span> $2.5</p>
           </div>
 
         </div>
@@ -38,30 +38,7 @@ const Restaurant = () => {
           <Category />
         </div>
       </div>
-      <div className=' basket sticky top-20 bg-primaryOpposite grow-0 shrink-0 basis-[450px] px-9 pt-10 pb-20 flex flex-col h-[calc(100vh-80px)] drop-shadow-lg'>
-
-        <p className='self-center text-4xl font-semibold'>Basket</p>
-        <div className="itemsContainer flex flex-col gap-8">
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-        </div>
-
-        <div className='flex mt-auto  text-lg'>
-          <span >Dilivery cost </span>
-          <span className='ml-auto'>$10</span>
-        </div>
-
-        <div className='flex mt-5 text-2xl font-medium'>
-          <span>Total </span>
-          <span className='ml-auto'>$10</span>
-        </div>
-
-        <button className='text-2xl mt-20  text-primaryOpposite bg-primary border rounded-lg p-4 '>Check out</button>
-
-      </div>
+      <Basket editable={true} />
     </div>
   )
 }
