@@ -1,9 +1,38 @@
 import React from 'react'
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import MenuIcon from '@mui/icons-material/Menu';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { app } from "../firebase.config"
+import { useStateValue } from '../context/StateProvider';
+
 import { useState } from 'react';
+import { actionType } from '../context/reducer';
 const Navbar = () => {
     const [isMenu, setIsMenu] = useState(false)
+    const [{ user }, dispatch] = useStateValue()
+
+    const firebaseAuth = getAuth(app)
+    const provider = new GoogleAuthProvider()
+    const login = async () => {
+        console.log("Logging in ")
+        console.log(user)
+        if (!user) {
+            const { user: { refreshToken, providerData } } = await signInWithPopup(firebaseAuth, provider)
+            const action = { type: actionType.SET_USER, user: providerData[0] }
+            dispatch(action)
+
+            localStorage.setItem('user', JSON.stringify(providerData[0]))
+
+        }
+    }
+
+
+    const logout = () => {
+        localStorage.removeItem('user')
+        window.location.reload()
+    }
+
+    // login()
     return (
         <div className='mb-25 z-50 h-20 sticky top-0 bg-primary text-primaryOpposite flex px-10   justify-between'>
 
@@ -23,15 +52,22 @@ const Navbar = () => {
                         isMenu &&
                         (
                             <div className="menuBar absolute top-14 right-0 border rounded-lg w-40 right flex flex-col bg-primaryOpposite text-primary drop-shadow-lg">
-                                <div className="p-4 border-1 border-b">Long Huynh</div>
-                                <div className="p-4 border-1 border-b cursor-pointer">My orders</div>
-                                <div className="p-4 border-1 border-b cursor-pointer">Sign out</div>
+                                {
+                                    user ? <>
+                                        <div className="p-4 border-1 border-b">Long Huynh</div>
+                                        <div className="p-4 border-1 border-b cursor-pointer">My orders</div>
+                                        <div className="p-4 border-1 border-b cursor-pointer" onClick={logout}>Sign out</div>
+                                    </>
+                                        :
+                                        <div className="p-4 border-1 border-b cursor-pointer" onClick={login}>Log in</div>
+                                }
+
                             </div>
                         )
                     }
 
 
-                    
+
                 </div>
 
             </div>

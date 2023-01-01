@@ -6,7 +6,7 @@ import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import Basket from '../components/Basket';
 import ItemModal from '../components/ItemModal';
-const Restaurant = () => {
+const Orders = () => {
 
   const rating = 4.5
   return (
@@ -49,4 +49,4 @@ const Restaurant = () => {
   )
 }
 
-export default Restaurant
+export default Orders

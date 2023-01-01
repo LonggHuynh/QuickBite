@@ -1,0 +1,11 @@
+.checkout input {
+    display: block;
+    border-bottom-width: 1px;
+    width: 100%;
+    padding: 4px;
+
+}
+
+.checkout input:focus{
+    outline: none;
+}
