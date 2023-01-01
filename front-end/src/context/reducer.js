@@ -1,27 +1,31 @@
+import {combineReducers} from 'redux'
+
 export const actionType = {
   SET_USER: "SET_USER",
-  SET_CARTITEMS: "SET_CARTITEMS",
+  SET_CART: "SET_CART",
 };
 
-const reducer = (state, action) => {
-  // console.log(action);
 
-  switch (action.type) {
+const userReducer =  (state= {}, action)=>{
+  switch(action.type){
     case actionType.SET_USER:
-      return {
-        ...state,
-        user: action.user,
-      };
-
-    case actionType.SET_CARTITEMS:
-      return {
-        ...state,
-        cartItems: action.cartItems,
-      };
-
+      return action.payload
     default:
-      return state;
+      return state
   }
-};
+}
+
+const cartReducer = (state= [], action)=>{
+  switch(action.type){
+    case actionType.SET_CART:
+      return action.payload
+    default:
+      return state
+  }
+}
+
+
+const reducer = combineReducers({user: userReducer, cart: cartReducer})
+
 
 export default reducer;

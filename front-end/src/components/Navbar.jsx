@@ -9,16 +9,15 @@ import { useState } from 'react';
 import { actionType } from '../context/reducer';
 const Navbar = () => {
     const [isMenu, setIsMenu] = useState(false)
-    const [{ user }, dispatch] = useStateValue()
+    const [state, dispatch] = useStateValue()
+    const user = state.user
 
     const firebaseAuth = getAuth(app)
     const provider = new GoogleAuthProvider()
     const login = async () => {
-        console.log("Logging in ")
-        console.log(user)
         if (!user) {
             const { user: { refreshToken, providerData } } = await signInWithPopup(firebaseAuth, provider)
-            const action = { type: actionType.SET_USER, user: providerData[0] }
+            const action = { type: actionType.SET_USER, payload: providerData[0] }
             dispatch(action)
 
             localStorage.setItem('user', JSON.stringify(providerData[0]))
@@ -54,7 +53,7 @@ const Navbar = () => {
                             <div className="menuBar absolute top-14 right-0 border rounded-lg w-40 right flex flex-col bg-primaryOpposite text-primary drop-shadow-lg">
                                 {
                                     user ? <>
-                                        <div className="p-4 border-1 border-b">Long Huynh</div>
+                                        <div className="p-4 border-1 border-b">{user.displayName}</div>
                                         <div className="p-4 border-1 border-b cursor-pointer">My orders</div>
                                         <div className="p-4 border-1 border-b cursor-pointer" onClick={logout}>Sign out</div>
                                     </>

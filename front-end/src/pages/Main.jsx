@@ -20,7 +20,7 @@ const Main = () => {
                         onChange={() => setIsDeliveryFree(prev => !prev)}
                         inputProps={{ 'aria-label': 'controlled' }}
                     />
-                </div>
+                </div>  
 
                 <div className='filterItem'>
                     <p className='text-2xl mb-3 font-semibold'>Min Order</p>
@@ -46,9 +46,9 @@ const Main = () => {
                     {
 
                         [...Array(5).keys()].map((_, ind) => {
-                            console.log(ind)
+                            
                             return (
-                                <div className='inputItem mb-2'>
+                                <div className='inputItem mb-2' key={ind}>
                                     <input type='radio' id={`start${ind}`} value={ind + 1} name='price' />
                                     <label className='ml-3' htmlFor={`start${ind}`} > {ind + 1}</label>
                                 </div>
