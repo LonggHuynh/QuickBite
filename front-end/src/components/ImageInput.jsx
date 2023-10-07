@@ -1,35 +1,27 @@
-import React from 'react'
-import FileUploadIcon from '@mui/icons-material/FileUpload';
-import DeleteIcon from '@mui/icons-material/Delete';
+import React from "react";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const ImageInput = ({ image, setImage }) => {
-
-
-
     const uploadImage = (e) => {
-
-        const file = e.target.files[0]
+        const file = e.target.files[0];
         const reader = new FileReader();
         reader.onload = function (e) {
             const dataUrl = e.target.result;
-            setImage(dataUrl)
+            setImage(dataUrl);
         };
         reader.readAsDataURL(file);
-    }
-
+    };
 
     const deleteImage = () => {
-        setImage(null)
-    }
-
+        setImage(null);
+    };
 
     return (
-
         <div className="group flex justify-center items-center flex-col  border border-primary w-full h-225  cursor-pointer ">
             <>
                 {!image ? (
                     <>
-
                         <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
                             <div className="w-full h-full flex flex-col items-center justify-center gap-2">
                                 <FileUploadIcon className="text-primary 0 text-3xl " />
@@ -51,7 +43,7 @@ const ImageInput = ({ image, setImage }) => {
                         <div className="relative h-full">
                             <img
                                 src={image}
-                                alt=''
+                                alt=""
                                 className="w-full h-full object-cover"
                             />
                             <button
@@ -65,12 +57,8 @@ const ImageInput = ({ image, setImage }) => {
                     </>
                 )}
             </>
-
-
-
         </div>
+    );
+};
 
-    )
-}
-
-export default ImageInput
+export default ImageInput;

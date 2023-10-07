@@ -1,37 +1,45 @@
-version: '3'
+version: "3"
 services:
-  back-end:
-    build: ./back-end
-    container_name: foodOrderingAppBack
-    ports:
-      - "5000:5000"
-    volumes:
-      - ./back-end:/home/app
-      - /home/app/node_modules
-    environment:
-      CONNECTIONSTRING: postgresql://user:${PG_PASSWORD}@db:5432
-      # - CREDS=//Your Firebase service account goes here 
-    depends_on:
-      - db
+    back-end:
+        build: ./back-end
+        container_name: foodOrderingAppBack
+        expose:
+            - 5000
+        volumes:
+            - ./back-end:/home/app
+            - /home/app/node_modules
+        environment:
+            CONNECTIONSTRING: postgresql://user:${PG_PASSWORD}@db:5432
+        env_file:
+            - ./back-end/.env
+        depends_on:
+            - db
 
-  front-end:
-    build: ./front-end
-    container_name: foodOrderingAppFront
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./front-end:/home/app
-      - /home/app/node_modules
+    front-end:
+        build: ./front-end
+        container_name: foodOrderingAppFront
+        expose:
+            - 3000
+        volumes:
+            - ./front-end:/home/app
+            - /home/app/node_modules
 
-  db:
-    image: 'postgres'
-    container_name: foodOrderingAppDb
-    environment:
-      POSTGRES_USER: 'user'
-      POSTGRES_PASSWORD: ${PG_PASSWORD}
-    volumes:
-      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
-      - pgdata:/var/lib/postgresql/data
-      
+    db:
+        image: "postgres"
+        container_name: foodOrderingAppDb
+        environment:
+            POSTGRES_USER: "user"
+            POSTGRES_PASSWORD: ${PG_PASSWORD}
+        volumes:
+            - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+            - pgdata:/var/lib/postgresql/data
+
+    nginx-proxy:
+        image: nginx:1.19.0-alpine
+        ports:
+            - 80:80
+        volumes:
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+
 volumes:
-  pgdata:
+    pgdata:

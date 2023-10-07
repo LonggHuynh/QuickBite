@@ -3,10 +3,9 @@
     border-bottom-width: 1px;
     width: 100%;
     padding: 4px;
-    background-color: inherit
-
+    background-color: inherit;
 }
 
-.checkout input:focus{
+.checkout input:focus {
     outline: none;
 }
