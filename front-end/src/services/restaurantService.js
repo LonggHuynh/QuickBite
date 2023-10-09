@@ -101,7 +101,7 @@ export const fetchRestaurantById = async (id) => {
     return data.data;
 };
 
-export default {
+const restaurantService = {
     getRestaurants,
     createDish,
     updateDish,
@@ -110,3 +110,4 @@ export default {
 
     fetchRestaurantById,
 };
+export default restaurantService;

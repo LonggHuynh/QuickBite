@@ -60,8 +60,10 @@ const fetchOrders = async (accessToken) => {
     return processedOrders;
 };
 
-export default {
+const orderService = {
     rateOrder,
     submitOrder,
     fetchOrders,
 };
+
+export default orderService;

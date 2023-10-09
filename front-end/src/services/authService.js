@@ -25,11 +25,11 @@ const login = async (accessToken) => {
 
     const userData = await response.json();
 
-    console.log(userData);
     if (!response.ok) {
         throw new Error(userData.msg);
     }
     return userData;
 };
 
-export default { login, signup };
+const authService = { login, signup };
+export default authService;

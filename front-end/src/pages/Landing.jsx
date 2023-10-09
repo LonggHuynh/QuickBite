@@ -19,11 +19,11 @@ const Landing = () => {
                     <p className="text-orange-500 text-2xl italic">
                         Let's order food now
                     </p>
-                    <button className="w-[200px] h-[70px] text-lg p-5 rounded-full border-2 border-white bg-transparent text-white mt-10 ">
-                        <Link reloadDocument to={"/main"}>
+                    <Link to={"/main"}>
+                        <button className="w-[200px] h-[70px] text-lg p-5 rounded-full border-2 border-white bg-transparent text-white mt-10 ">
                             Getting started
-                        </Link>
-                    </button>
+                        </button>
+                    </Link>
                 </div>
 
                 <div

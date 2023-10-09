@@ -87,7 +87,7 @@ const Navbar = () => {
             )}
 
             <div className="logo flex items-center text-2xl font-semibold">
-                <Link to="/">QuickBite</Link>
+                <Link to="/main">QuickBite</Link>
             </div>
             <div className="cartAndMenu flex items-center gap-4">
                 <Link
