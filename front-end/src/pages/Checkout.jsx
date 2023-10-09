@@ -61,7 +61,7 @@ const Checkout = () => {
                     );
                     toast.success(data.msg);
                     dispatch({ type: actionType.CLEAR_CART });
-                    navigate(accessToken ? "/orders" : "/");
+                    navigate(accessToken ? "/orders" : "/main");
                     setLoading(false);
                 } catch (error) {
                     toast.error(error.message);

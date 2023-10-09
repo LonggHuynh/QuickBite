@@ -160,7 +160,7 @@ const Main = () => {
                         <img
                             className="w-full h-full object-cover object-center"
                             alt=""
-                            src="https://img.freepik.com/free-photo/flat-lay-batch-cooking-composition_23-2148765597.jpg"
+                            src={"/images/main_food.jpg"}
                         />
                     </div>
                     <div className="searchAndSort flex gap-10 mt-20">

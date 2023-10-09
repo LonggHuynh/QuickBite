@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import OrderCard from "../components/OrderCard";
 import CartInfo from "../components/CartInfo";
 import "./Checkout.css";
-import url from "../config/api";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";

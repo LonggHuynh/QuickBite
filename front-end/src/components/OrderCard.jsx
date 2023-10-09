@@ -2,7 +2,6 @@ import React from "react";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
 import { useSelector } from "react-redux";
-import url from "../config/api";
 import { toast } from "react-toastify";
 import orderService from "../services/orderService";
 const OrderCard = ({ order, selectOrder, rerender }) => {
