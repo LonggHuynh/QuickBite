@@ -74,7 +74,7 @@ const Navbar = () => {
 
     const logout = () => {
         sessionStorage.clear();
-        window.location.replace("/");
+        window.location.replace("/main");
     };
 
     return (

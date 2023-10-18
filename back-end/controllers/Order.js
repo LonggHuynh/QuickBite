@@ -72,7 +72,6 @@ const addNewOrder = async (req, res, next) => {
             return map;
         }, {});
 
-        // rows can be empty but its handier to check later.
         let total = Number(rows[0].delivery_cost) || 0;
 
         items.forEach(({ id, quantity }) => {
@@ -80,7 +79,6 @@ const addNewOrder = async (req, res, next) => {
             total += price * quantity;
         });
 
-        //Dupplcate item and/or items not from the same restaurant or inconsitent amount paid
         if (
             items.length > priceMap.length ||
             amountPaid != total ||
@@ -132,7 +130,7 @@ const addNewOrder = async (req, res, next) => {
         await db.query(insertItemsStatement, orderedItems.flat());
 
         await db.query("COMMIT");
-        res.status(201).json({ msg: "Ordered added" });
+        res.status(201).json({ msg: "Order added" });
     } catch (err) {
         await db.query("ABORT");
         next(err);
