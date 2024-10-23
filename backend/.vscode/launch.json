@@ -1,0 +1,18 @@
+// .vscode/launch.json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Dev Server",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "ts-node-dev",    // Use ts-node-dev as the runtime
+      "args": ["--inspect", "--respawn", "--transpile-only", "src/server.ts"],  // Same args as your dev script
+      "sourceMaps": true,                    // Enable source maps for debugging TypeScript
+      "restart": true,                       // Auto-restart on changes
+      "console": "integratedTerminal",       // Use VS Code's terminal for output
+      "internalConsoleOptions": "neverOpen", // Don’t auto-open the debug console
+      "skipFiles": ["<node_internals>/**"]   // Skip unnecessary internal Node.js files
+    }
+  ]
+}

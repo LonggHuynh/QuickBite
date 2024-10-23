@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "tsc: build - tsconfig.json",
+      "type": "typescript",
+      "tsconfig": "tsconfig.json",   // Reference to the tsconfig.json file
+      "group": {
+        "kind": "build",
+        "isDefault": true            // Mark as the default build task
+      },
+      "problemMatcher": ["$tsc"],    // Use TypeScript's problem matcher for errors
+      "detail": "TypeScript compiler task"
+    }
+  ]
+}
