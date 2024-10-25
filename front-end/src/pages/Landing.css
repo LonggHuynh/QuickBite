@@ -1,15 +1,15 @@
 .SocialMedia {
-    position: absolute;
-    right: 0;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-direction: column;
-    width: 40px;
-    height: 200px;
-    background-color: white;
-    font-size: 25px;
+  position: absolute;
+  right: 0;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+  width: 40px;
+  height: 200px;
+  background-color: white;
+  font-size: 25px;
 }
 .SocialMedia i:hover {
-    color: orange;
+  color: orange;
 }

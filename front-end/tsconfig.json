@@ -1,16 +1,16 @@
 {
   "compilerOptions": {
-    "outDir": "./dist", // Compiled JavaScript files will go here
-    "rootDir": "./src", // Source TypeScript files will remain in src
+    "outDir": "./dist",
+    "rootDir": "./src",
     "target": "es6",
     "module": "commonjs",
-    "jsx": "react-jsx", // For React 17+ or "react" for earlier versions
+    "jsx": "react",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "allowJs": true, // Allows JS files in the project
-    "checkJs": false, // Disables type checking on JS files
+    "allowJs": true,
+    "checkJs": false,
     "resolveJsonModule": true,
     "isolatedModules": true
   },

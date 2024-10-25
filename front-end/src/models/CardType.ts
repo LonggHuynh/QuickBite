@@ -1,4 +1,4 @@
 export enum CardType {
-    Edit,
-    Create
+  Edit,
+  Create,
 }

@@ -1,0 +1,52 @@
+name: Frontend CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: front-end/node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('front-end/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node_modules-
+
+      - name: Install dependencies
+        working-directory: front-end
+        run: npm ci
+
+      - name: Run ESLint
+        working-directory: front-end
+        run: npm run lint
+
+      - name: Build project
+        working-directory: front-end
+        run: npm run build
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-lint
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Add your deployment steps here
