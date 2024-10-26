@@ -1,12 +1,12 @@
-// src/controllers/restaurantController.ts
-import { Request, Response, NextFunction } from 'express';
-import * as restaurantService from '../services/RestaurantService';
-import { plainToInstance } from 'class-transformer';
-import { Restaurant } from '../models/Restaurant';
-import { v4 as uuidv4 } from 'uuid';
-import { UpdateRestaurantDTO } from '../dtos/UpdateRestautantDTO';
-import { CreateRestaurantDTO } from '../dtos/CreateRestautantDTO';
-import * as dishService from '../services/DishService';
+import { Request, Response, NextFunction } from "express";
+import { plainToInstance } from "class-transformer";
+import { v4 as uuidv4 } from "uuid";
+
+import * as restaurantService from "../services/RestaurantService";
+import { Restaurant } from "../models/Restaurant";
+import { UpdateRestaurantDTO } from "../dtos/UpdateRestautantDTO";
+import { CreateRestaurantDTO } from "../dtos/CreateRestautantDTO";
+import * as dishService from "../services/DishService";
 
 /**
  * @swagger
@@ -28,7 +28,7 @@ import * as dishService from '../services/DishService';
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/RestaurantDTO'
+ *             $ref: '#/components/schemas/CreateRestaurantDTO'
  *     responses:
  *       201:
  *         description: Restaurant created
@@ -42,16 +42,27 @@ import * as dishService from '../services/DishService';
  *       401:
  *         description: Unauthorized
  */
-export async function createRestaurantHandler(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const ownerId = req.user?.uid!;
-    const createRestaurantDTO = plainToInstance(CreateRestaurantDTO, req.body);
-    const restaurant: Restaurant = { ...createRestaurantDTO, id: createRestaurantDTO.id ?? uuidv4(), owner_id: ownerId };
-    const createdRestaurant = await restaurantService.createRestaurant(ownerId, restaurant);
-    res.status(201).json(createdRestaurant);
+export async function createRestaurantHandler(
+  req: Request,
+  res: Response,
+  _next: NextFunction
+): Promise<void> {
+  const ownerId = req.user?.uid!;
+  const createRestaurantDTO = plainToInstance(CreateRestaurantDTO, req.body);
+  const restaurant: Restaurant = {
+    ...createRestaurantDTO,
+    id: createRestaurantDTO.id ?? uuidv4(),
+    owner_id: ownerId,
+  };
+  const createdRestaurant = await restaurantService.createRestaurant(
+    ownerId,
+    restaurant
+  );
+  res.status(201).json(createdRestaurant);
 }
 
 /**
- * @swagger
+ * @openapi
  * /api/restaurants/{id}:
  *   put:
  *     summary: Update an existing restaurant
@@ -70,7 +81,7 @@ export async function createRestaurantHandler(req: Request, res: Response, next:
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/RestaurantDTO'
+ *             $ref: '#/components/schemas/UpdateRestaurantDTO'
  *     responses:
  *       200:
  *         description: Restaurant updated
@@ -87,17 +98,20 @@ export async function createRestaurantHandler(req: Request, res: Response, next:
  *       404:
  *         description: Restaurant not found
  */
-export async function updateRestaurantHandler(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const restaurantId = req.params.id;
-    const updateRestaurantDTO = plainToInstance(UpdateRestaurantDTO, req.body);
-    const restaurant: Partial<Restaurant> = { ...updateRestaurantDTO };
-    const updatedRestaurant = await restaurantService.updateRestaurant(restaurantId, restaurant);
-    res.status(200).json(updatedRestaurant);
-
+export async function updateRestaurantHandler(
+  req: Request,
+  res: Response,
+  _next: NextFunction
+): Promise<void> {
+  const restaurantId = req.params.id;
+  const updateRestaurantDTO = plainToInstance(UpdateRestaurantDTO, req.body);
+  const restaurant: Partial<Restaurant> = { ...updateRestaurantDTO };
+  const updatedRestaurant = await restaurantService.updateRestaurant(
+    restaurantId,
+    restaurant
+  );
+  res.status(200).json(updatedRestaurant);
 }
-
-
-
 
 /**
  * @swagger
@@ -115,19 +129,17 @@ export async function updateRestaurantHandler(req: Request, res: Response, next:
  *     responses:
  *       200:
  *         description: Restaurant details
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/RestaurantDTO'
  *       404:
  *         description: Restaurant not found
  */
-export async function getRestaurantById(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const restaurant = await restaurantService.getRestaurantById(req.params.id);
-    res.status(200).json(restaurant);
+export async function getRestaurantById(
+  req: Request,
+  res: Response,
+  _next: NextFunction
+): Promise<void> {
+  const restaurant = await restaurantService.getRestaurantById(req.params.id);
+  res.status(200).json(restaurant);
 }
-
-
 
 /**
  * @swagger
@@ -141,17 +153,21 @@ export async function getRestaurantById(req: Request, res: Response, next: NextF
  *       200:
  *         description: A restaurant owned by the user
  *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Restaurant'
  */
-export async function getRestaurants(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const restaurants = await restaurantService.getRestaurants();
-    res.status(200).json(restaurants);
+export async function getRestaurants(
+  req: Request,
+  res: Response,
+  _next: NextFunction
+): Promise<void> {
+  const restaurants = await restaurantService.getRestaurants();
+  res.status(200).json(restaurants);
 }
 
-
-export const getDishesByRestaurantId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const dishes = await dishService.getDishesByRestaurantId(req.params.id);
-    res.status(200).json(dishes);
-}
+export const getDishesByRestaurantId = async (
+  req: Request,
+  res: Response,
+  _next: NextFunction
+): Promise<void> => {
+  const dishes = await dishService.getDishesByRestaurantId(req.params.id);
+  res.status(200).json(dishes);
+};

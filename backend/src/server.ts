@@ -1,7 +1,8 @@
-// src/server.ts
-import app from './app';
+import 'reflect-metadata';
 import dotenv from 'dotenv';
-import { logger } from './utils/logger';
+
+import app from './app';
+import logger from './utils/logger';
 
 dotenv.config();
 

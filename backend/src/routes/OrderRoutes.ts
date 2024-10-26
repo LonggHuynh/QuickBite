@@ -1,14 +1,16 @@
 import { Router } from 'express';
+
 import * as orderController from '../controllers/OrderController';
 import { authMiddleware } from '../middlewares/AuthMiddleware';
+import { asyncHandler } from '../asyncHandler';
 
 const router = Router();
 
 
 router.use(authMiddleware);
 
-router.get('/', orderController.getOrdersOfUserHandler);
-router.post('/', orderController.addNewOrderHandler);
+router.get('/', asyncHandler(orderController.getOrdersOfUserHandler));
+router.post('/', asyncHandler(orderController.addNewOrderHandler));
 
 
 

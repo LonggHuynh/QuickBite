@@ -1,36 +1,39 @@
-// src/config/swagger.ts
-import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerJsdoc from "swagger-jsdoc";
 
 const swaggerOptions = {
   definition: {
-    openapi: '3.0.0',
+    openapi: "3.0.0",
     info: {
-      title: 'Restaurant API',
-      version: '1.0.0',
-      description: 'API documentation for the Restaurant management system',
+      title: "Restaurant API",
+      version: "1.0.0",
+      description: "API documentation for the Restaurant management system",
     },
     servers: [
       {
-        url: 'http://localhost:5000',
-        description: 'Development server',
+        url: "http://localhost:5000",
+        description: "Development server",
       },
     ],
     components: {
       securitySchemes: {
-        bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT', // Optional, but indicates that the token is a JWT
+        bearerAuth: { 
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+        basicAuth: {
+          type: "http",
+          scheme: "basic",
         },
       },
     },
     security: [
       {
-        bearerAuth: [], // Apply BearerAuth globally for all endpoints that require authentication
+        bearerAuth: [],
       },
     ],
   },
-  apis: ['./src/routes/*.ts', './src/controllers/*.ts', './src/dtos/*.ts'],  // Paths to your API files
+  apis: ["./src/routes/*.ts", "./src/controllers/*.ts", "./src/dtos/*.ts"],
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);

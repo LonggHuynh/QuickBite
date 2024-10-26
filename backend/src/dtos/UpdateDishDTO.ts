@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, IsNumber, IsUUID, IsPositive } from 'class-validator';
+import { IsString, IsOptional, IsNumber, IsPositive } from 'class-validator';
 
 /**
  * @swagger
@@ -6,32 +6,40 @@ import { IsString, IsNotEmpty, IsOptional, IsNumber, IsUUID, IsPositive } from '
  *   schemas:
  *     UpdateDishDTO:
  *       type: object
+ *       required:
+ *         - id
  *       properties:
  *         id:
  *           type: string
  *           format: uuid
- *           description: Unique identifier for the dish
- *           example: "d290f1ee-6c54-4b01-90e6-d701748f0851"
+ *           description: Unique identifier for the restaurant.
  *         name:
  *           type: string
- *           description: Name of the dish (optional)
- *           example: "Margherita Pizza"
- *         description:
+ *           description: Name of the restaurant.
+ *           minLength: 3
+ *         logo_url:
  *           type: string
- *           description: Description of the dish (optional)
- *           example: "Classic Margherita with fresh basil and mozzarella."
- *         img:
- *           type: string
- *           description: URL of the dish image (optional)
- *           example: "https://example.com/dish-image.jpg"
- *         price:
+ *           format: url
+ *           description: URL to the restaurant's logo.
+ *         delivery_fee:
  *           type: number
- *           description: Price of the dish (optional)
- *           example: 9.99
- *         category:
+ *           description: Delivery fee for the restaurant.
+ *           minimum: 0
+ *         background_url:
  *           type: string
- *           description: Category of the dish (optional)
- *           example: "Pizza"
+ *           format: url
+ *           description: URL to the restaurant's background image.
+ *         min_order:
+ *           type: number
+ *           description: Minimum order amount required.
+ *           minimum: 0
+ *       example:
+ *         id: "123e4567-e89b-12d3-a456-426614174000"
+ *         name: "The Great Pizza Place"
+ *         logo_url: "http://example.com/logo.png"
+ *         delivery_fee: 5.99
+ *         background_url: "http://example.com/background.png"
+ *         min_order: 20
  */
 export class UpdateDishDTO {
 

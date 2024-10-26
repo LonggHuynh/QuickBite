@@ -11,6 +11,10 @@ on:
 jobs:
   build-and-lint:
     runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: front-end
 
     steps:
       - name: Checkout code
@@ -21,24 +25,21 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Cache node_modules
+      - name: 'Cache Node.js modules'
         uses: actions/cache@v3
         with:
-          path: front-end/node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('front-end/package-lock.json') }}
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('backend/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-node_modules-
+            ${{ runner.os }}-node-
 
-      - name: Install dependencies
-        working-directory: front-end
+      - name: 'Install Dependencies'
         run: npm ci
 
       - name: Run ESLint
-        working-directory: front-end
         run: npm run lint
 
       - name: Build project
-        working-directory: front-end
         run: npm run build
 
   deploy:
@@ -49,4 +50,3 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Add your deployment steps here

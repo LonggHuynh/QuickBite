@@ -1,5 +1,5 @@
-interface UserClaims {
-    uid: string;
-    role: string;
-    email: string;
-  }
+export interface UserClaims {
+  uid: string;
+  role: string;
+  email: string;
+}

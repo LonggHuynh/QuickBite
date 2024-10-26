@@ -1,4 +1,3 @@
-import { Dish } from './Dish';
 
 
 export interface Item {

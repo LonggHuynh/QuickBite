@@ -3,7 +3,7 @@ import * as orderDAO from '../daos/OrderDAO';
 import * as dishDAO from '../daos/DishDAO';
 import * as restaurantDAO from '../daos/RestaurantDAO';
 import { AppOrder } from '../models/AppOrder';
-import { CustomError } from '../errors/CustomError';
+import { CustomHttpError } from '../errors/CustomHttpError';
 
 jest.mock('../daos/OrderDAO');
 jest.mock('../daos/DishDAO');
@@ -84,7 +84,7 @@ describe('orderService.createOrder', () => {
         mockedRestaurantDAO.getRestaurantById.mockResolvedValue(restaurantDetails);
 
         // Act & Assert
-        await expect(orderService.createOrder(order)).rejects.toThrow(CustomError);
+        await expect(orderService.createOrder(order)).rejects.toThrow(CustomHttpError);
         await expect(orderService.createOrder(order)).rejects.toThrow('Order items are required.');
     });
 
@@ -104,7 +104,7 @@ describe('orderService.createOrder', () => {
         mockedRestaurantDAO.getRestaurantById.mockResolvedValue(undefined);
 
         // Act & Assert
-        await expect(orderService.createOrder(order)).rejects.toThrow(CustomError);
+        await expect(orderService.createOrder(order)).rejects.toThrow(CustomHttpError);
         await expect(orderService.createOrder(order)).rejects.toThrow('Restaurant not found');
     });
 
@@ -131,7 +131,7 @@ describe('orderService.createOrder', () => {
         });
 
         // Act & Assert
-        await expect(orderService.createOrder(order)).rejects.toThrow(CustomError);
+        await expect(orderService.createOrder(order)).rejects.toThrow(CustomHttpError);
         await expect(orderService.createOrder(order)).rejects.toThrow('No dishes found for the given restaurant');
     });
 
@@ -166,7 +166,7 @@ describe('orderService.createOrder', () => {
         mockedRestaurantDAO.getRestaurantById.mockResolvedValue(restaurantDetails);
 
         // Act & Assert
-        await expect(orderService.createOrder(order)).rejects.toThrow(CustomError);
+        await expect(orderService.createOrder(order)).rejects.toThrow(CustomHttpError);
         await expect(orderService.createOrder(order)).rejects.toThrow('There is something wrong with your order.');
     });
 
@@ -196,7 +196,7 @@ describe('orderService.createOrder', () => {
         mockedRestaurantDAO.getRestaurantById.mockResolvedValue(restaurantDetails);
 
         // Act & Assert
-        await expect(orderService.createOrder(order)).rejects.toThrow(CustomError);
+        await expect(orderService.createOrder(order)).rejects.toThrow(CustomHttpError);
         await expect(orderService.createOrder(order)).rejects.toThrow('The minimum order price has not been reached yet.');
     });
 

@@ -1,9 +1,9 @@
-// src/app.ts
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
+
 import swaggerSpec from './config/swagger';
 import authRoutes from './routes/AuthRoutes';
 import dishRoutes from './routes/DishRoutes';
@@ -18,7 +18,7 @@ const app = express();
 
 app.use(helmet());
 app.use(cors({
-    origin: "http://localhost:3000",  
+    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
     credentials: true,  
     allowedHeaders: ['Authorization', 'Content-Type'],  
     exposedHeaders: ['Authorization'],  

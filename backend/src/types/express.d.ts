@@ -1,4 +1,4 @@
-import { Request } from 'express';
+import { UserClaims } from '../models/UserClaims';
 
 declare global {
   namespace Express {

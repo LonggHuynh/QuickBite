@@ -1,5 +1,7 @@
 // src/services/restaurantService.test.ts
 
+  import { v4 as uuidv4 } from 'uuid';
+
 import {
     createRestaurant,
     updateRestaurant,
@@ -9,8 +11,7 @@ import {
   } from '../services/RestaurantService';
   import * as restaurantDAO from '../daos/RestaurantDAO';
   import { Restaurant } from '../models/Restaurant';
-  import { CustomError } from '../errors/CustomError';
-  import { v4 as uuidv4 } from 'uuid';
+  import { CustomHttpError } from '../errors/CustomHttpError';
   
   jest.mock('../daos/RestaurantDAO'); // Mock the DAO module
   jest.mock('uuid'); // Mock the uuid module
@@ -81,7 +82,7 @@ import {
       expect(mockedRestaurantDAO.updateRestaurant).toHaveBeenCalledWith(updatedRestaurant);
     });
   
-    it('should throw a CustomError when the restaurant does not exist', async () => {
+    it('should throw a CustomHttpError when the restaurant does not exist', async () => {
       const restaurantId = 'nonexistent123';
       const updateData: Partial<Restaurant> = {
         name: 'Updated Restaurant',
@@ -91,7 +92,7 @@ import {
       mockedRestaurantDAO.getRestaurantById.mockResolvedValue(undefined);
   
       await expect(updateRestaurant(restaurantId, updateData)).rejects.toThrow(
-        new CustomError(404, 'Restaurant not found')
+        new CustomHttpError(404, 'Restaurant not found')
       );
       expect(mockedRestaurantDAO.getRestaurantById).toHaveBeenCalledWith(restaurantId);
     });
@@ -144,13 +145,13 @@ import {
       expect(mockedRestaurantDAO.getRestaurantByOwnerId).toHaveBeenCalledWith(ownerId);
     });
   
-    it('should throw a CustomError when the restaurant is not found', async () => {
+    it('should throw a CustomHttpError when the restaurant is not found', async () => {
       const ownerId = 'nonexistentOwner';
   
       mockedRestaurantDAO.getRestaurantByOwnerId.mockResolvedValue(undefined);
   
       await expect(getRestaurantByOwnerId(ownerId)).rejects.toThrow(
-        new CustomError(404, 'Restaurant not found')
+        new CustomHttpError(404, 'Restaurant not found')
       );
       expect(mockedRestaurantDAO.getRestaurantByOwnerId).toHaveBeenCalledWith(ownerId);
     });
@@ -175,13 +176,13 @@ import {
       expect(mockedRestaurantDAO.getRestaurantById).toHaveBeenCalledWith(id);
     });
   
-    it('should throw a CustomError when the restaurant is not found', async () => {
+    it('should throw a CustomHttpError when the restaurant is not found', async () => {
       const id = 'nonexistentId';
   
       mockedRestaurantDAO.getRestaurantById.mockResolvedValue(undefined);
   
       await expect(getRestaurantById(id)).rejects.toThrow(
-        new CustomError(404, 'Restaurant not found')
+        new CustomHttpError(404, 'Restaurant not found')
       );
       expect(mockedRestaurantDAO.getRestaurantById).toHaveBeenCalledWith(id);
     });

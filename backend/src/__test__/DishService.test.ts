@@ -1,13 +1,15 @@
-// DishService.test.ts
-
 import * as dishDAO from '../daos/DishDAO';
-import { createDish, updateDish, getDishesByRestaurantId } from '../services/DishService';
+import * as restaurantDAO from '../daos/RestaurantDAO';
+import * as dishService from '../services/DishService';
 import { Dish } from '../models/Dish';
-import { CustomError } from '../errors/CustomError';
+import { CustomHttpError } from '../errors/CustomHttpError';
+import { Restaurant } from '../models/Restaurant';
 
 jest.mock('../daos/DishDAO');
+jest.mock('../daos/RestaurantDAO');
 
 const mockedDishDAO = dishDAO as jest.Mocked<typeof dishDAO>;
+const mockedRestaurantDAO = restaurantDAO as jest.Mocked<typeof restaurantDAO>;
 
 describe('Dish Service', () => {
   afterEach(() => {
@@ -23,13 +25,44 @@ describe('Dish Service', () => {
         restaurant_id: 'r1',
         price: 12.99,
       };
+      const existingRestaurant: Restaurant = {
+        id: 'r1',
+        owner_id: 'u1',
+        name: 'Existing Restaurant',
+        logo_url: 'http://example.com/logo.png',
+        delivery_fee: 5,
+        background_url: 'http://example.com/bg.png',
+        min_order: 10,
+      };
+      const uid = 'u1';
 
       mockedDishDAO.createDish.mockResolvedValueOnce();
-
-      const result = await createDish(newDish);
+      mockedRestaurantDAO.getRestaurantByOwnerId.mockResolvedValueOnce(existingRestaurant);
+      await dishService.createDish(newDish, uid);
 
       expect(mockedDishDAO.createDish).toHaveBeenCalledWith(newDish);
-      expect(result).toEqual(newDish);
+    });
+    it('should throw CustomHttpError 404 if restaurant not found', async () => {
+      const newDish: Dish = {
+        id: '2',
+        name: 'Pizza',
+        description: 'Cheesy pizza',
+        price: 15.99,
+      };
+      const uid = 'u1';
+
+      mockedRestaurantDAO.getRestaurantByOwnerId.mockResolvedValueOnce(
+        undefined,
+      );
+
+      await expect(dishService.createDish(newDish, uid)).rejects.toEqual(
+        new CustomHttpError(404, 'Restaurant not found'),
+      );
+
+      expect(mockedRestaurantDAO.getRestaurantByOwnerId).toHaveBeenCalledWith(
+        uid,
+      );
+      expect(mockedDishDAO.createDish).not.toHaveBeenCalled();
     });
 
     it('should throw an error if DAO fails', async () => {
@@ -37,13 +70,33 @@ describe('Dish Service', () => {
         id: '2',
         name: 'Pizza',
         description: 'Cheesy pizza',
-        restaurant_id: 'r1',
         price: 15.99,
       };
+      const existingRestaurant: Restaurant = {
+        id: 'r1',
+        owner_id: 'u1',
+        name: 'Existing Restaurant',
+        logo_url: 'http://example.com/logo.png',
+        delivery_fee: 5,
+        background_url: 'http://example.com/bg.png',
+        min_order: 10,
+      };
 
+      const uid = 'u1';
+
+      mockedRestaurantDAO.getRestaurantByOwnerId.mockResolvedValueOnce(
+        existingRestaurant,
+      );
       mockedDishDAO.createDish.mockRejectedValueOnce(new Error('DAO Error'));
 
-      await expect(createDish(newDish)).rejects.toThrow('DAO Error');
+      await expect(dishService.createDish(newDish, uid)).rejects.toThrow(
+        'DAO Error',
+      );
+
+      expect(mockedRestaurantDAO.getRestaurantByOwnerId).toHaveBeenCalledWith(
+        uid,
+      );
+      expect(newDish.restaurant_id).toBe(existingRestaurant.id);
       expect(mockedDishDAO.createDish).toHaveBeenCalledWith(newDish);
     });
   });
@@ -68,14 +121,18 @@ describe('Dish Service', () => {
       mockedDishDAO.getDishById.mockResolvedValueOnce(existingDish);
       mockedDishDAO.updateDish.mockResolvedValueOnce();
 
-      const result = await updateDish(dishId, restaurantId, updates);
+      const result = await dishService.updateDish(
+        dishId,
+        restaurantId,
+        updates,
+      );
 
       expect(mockedDishDAO.getDishById).toHaveBeenCalledWith(dishId);
       expect(mockedDishDAO.updateDish).toHaveBeenCalledWith(updatedDish);
       expect(result).toEqual(updatedDish);
     });
 
-    it('should throw CustomError 404 if dish does not exist', async () => {
+    it('should throw CustomHttpError 404 if dish does not exist', async () => {
       const dishId = '2';
       const restaurantId = 'r1';
       const updates: Partial<Dish> = {
@@ -84,15 +141,15 @@ describe('Dish Service', () => {
 
       mockedDishDAO.getDishById.mockResolvedValueOnce(null);
 
-      await expect(updateDish(dishId, restaurantId, updates)).rejects.toEqual(
-        new CustomError(404, 'Dish not found')
-      );
+      await expect(
+        dishService.updateDish(dishId, restaurantId, updates),
+      ).rejects.toEqual(new CustomHttpError(404, 'Dish not found'));
 
       expect(mockedDishDAO.getDishById).toHaveBeenCalledWith(dishId);
       expect(mockedDishDAO.updateDish).not.toHaveBeenCalled();
     });
 
-    it('should throw CustomError 404 if restaurant_id does not match', async () => {
+    it('should throw CustomHttpError 404 if restaurant_id does not match', async () => {
       const dishId = '3';
       const restaurantId = 'r2';
       const existingDish: Dish = {
@@ -108,9 +165,9 @@ describe('Dish Service', () => {
 
       mockedDishDAO.getDishById.mockResolvedValueOnce(existingDish);
 
-      await expect(updateDish(dishId, restaurantId, updates)).rejects.toEqual(
-        new CustomError(404, 'Dish not found')
-      );
+      await expect(
+        dishService.updateDish(dishId, restaurantId, updates),
+      ).rejects.toEqual(new CustomHttpError(404, 'Dish not found'));
 
       expect(mockedDishDAO.getDishById).toHaveBeenCalledWith(dishId);
       expect(mockedDishDAO.updateDish).not.toHaveBeenCalled();
@@ -135,7 +192,11 @@ describe('Dish Service', () => {
       mockedDishDAO.getDishById.mockResolvedValueOnce(existingDish);
       mockedDishDAO.updateDish.mockResolvedValueOnce();
 
-      const result = await updateDish(dishId, restaurantId, updates);
+      const result = await dishService.updateDish(
+        dishId,
+        restaurantId,
+        updates,
+      );
 
       expect(mockedDishDAO.getDishById).toHaveBeenCalledWith(dishId);
       expect(mockedDishDAO.updateDish).toHaveBeenCalledWith(updatedDish);
@@ -163,12 +224,13 @@ describe('Dish Service', () => {
         },
       ];
 
-      // Mock DAO method
       mockedDishDAO.getDishesByRestaurantId.mockResolvedValueOnce(dishes);
 
-      const result = await getDishesByRestaurantId(restaurantId);
+      const result = await dishService.getDishesByRestaurantId(restaurantId);
 
-      expect(mockedDishDAO.getDishesByRestaurantId).toHaveBeenCalledWith(restaurantId);
+      expect(mockedDishDAO.getDishesByRestaurantId).toHaveBeenCalledWith(
+        restaurantId,
+      );
       expect(result).toEqual(dishes);
     });
 
@@ -178,9 +240,11 @@ describe('Dish Service', () => {
       // Mock DAO method to return empty array
       mockedDishDAO.getDishesByRestaurantId.mockResolvedValueOnce([]);
 
-      const result = await getDishesByRestaurantId(restaurantId);
+      const result = await dishService.getDishesByRestaurantId(restaurantId);
 
-      expect(mockedDishDAO.getDishesByRestaurantId).toHaveBeenCalledWith(restaurantId);
+      expect(mockedDishDAO.getDishesByRestaurantId).toHaveBeenCalledWith(
+        restaurantId,
+      );
       expect(result).toEqual([]);
     });
 
@@ -188,11 +252,17 @@ describe('Dish Service', () => {
       const restaurantId = 'r3';
 
       // Mock DAO method to reject
-      mockedDishDAO.getDishesByRestaurantId.mockRejectedValueOnce(new Error('DAO Error'));
+      mockedDishDAO.getDishesByRestaurantId.mockRejectedValueOnce(
+        new Error('DAO Error'),
+      );
 
-      await expect(getDishesByRestaurantId(restaurantId)).rejects.toThrow('DAO Error');
+      await expect(
+        dishService.getDishesByRestaurantId(restaurantId),
+      ).rejects.toThrow('DAO Error');
 
-      expect(mockedDishDAO.getDishesByRestaurantId).toHaveBeenCalledWith(restaurantId);
+      expect(mockedDishDAO.getDishesByRestaurantId).toHaveBeenCalledWith(
+        restaurantId,
+      );
     });
   });
 });

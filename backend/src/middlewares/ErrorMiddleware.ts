@@ -1,10 +1,18 @@
-import { Request, Response, NextFunction } from 'express';
-import { CustomError } from '../errors/CustomError';
+import { Request, Response, NextFunction } from "express";
 
-export const errorMiddleware = (err: Error, req: Request, res: Response, next: NextFunction) => {
-  if (err instanceof CustomError) {
+import { CustomHttpError } from "../errors/CustomHttpError";
+import logger from "../utils/logger";
+
+export const errorMiddleware = (
+  err: Error,
+  _req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
+  logger.error(err);
+  if (err instanceof CustomHttpError) {
     res.status(err.statusCode).json({ msg: err.message });
   } else {
-    res.status(500).json({ msg: 'Internal Server Error' });
+    res.status(500).json({ msg: "Internal Server Error" });
   }
 };

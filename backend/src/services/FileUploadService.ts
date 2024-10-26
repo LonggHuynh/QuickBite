@@ -1,5 +1,4 @@
 import { BlobServiceClient, BlockBlobClient } from '@azure/storage-blob';
-import { on } from 'events';
 import { v4 as uuidv4 } from 'uuid';
 
 const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING as string;

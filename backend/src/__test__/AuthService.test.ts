@@ -1,16 +1,13 @@
-// src/services/authService.test.ts
-
-import * as authService from '../services/AuthService';
-import * as userDAO from '../daos/UserDAO';
-import { AppUser } from '../models/AppUser';
-import { CustomError } from '../errors/CustomError';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
 
+import * as authService from '../services/AuthService';
+import * as userDAO from '../daos/UserDAO';
+import { AppUser } from '../models/AppUser';
+import { CustomHttpError } from '../errors/CustomHttpError';
+
 jest.mock('../daos/UserDAO');
-// jest.mock('bcrypt'); // Remove or comment out this line
-// jest.mock('jsonwebtoken'); // Remove or comment out this line
 jest.mock('uuid');
 
 const mockedUserDAO = userDAO as jest.Mocked<typeof userDAO>;
@@ -25,17 +22,11 @@ describe('signUp', () => {
     const email = 'test@example.com';
     const password = 'password123';
 
-    // Mock userDAO.getUserByEmail to return undefined (no existing user)
     mockedUserDAO.getUserByEmail.mockResolvedValue(undefined);
-
-    // Mock uuidv4 to return a fixed UUID
     mockedUuidv4.mockReturnValue('test-uuid');
-
-    // Mock userDAO.createUser to resolve without error
     mockedUserDAO.createUser.mockResolvedValue();
 
-    // Set bcrypt salt rounds to 1 for testing to speed up hashing
-    const saltRounds = 1;
+
 
     const result = await authService.signUp(email, password);
 
@@ -62,7 +53,7 @@ describe('signUp', () => {
     mockedUserDAO.getUserByEmail.mockResolvedValue(existingUser);
 
     await expect(authService.signUp(email, password)).rejects.toThrow(
-      new CustomError(400, 'User with this email already exists')
+      new CustomHttpError(400, 'User with this email already exists')
     );
 
     expect(mockedUserDAO.getUserByEmail).toHaveBeenCalledWith(email);
@@ -98,7 +89,7 @@ describe('login', () => {
     mockedUserDAO.getUserByEmail.mockResolvedValue(undefined);
 
     await expect(authService.login(email, password)).rejects.toThrow(
-      new CustomError(401, 'Invalid email or password')
+      new CustomHttpError(401, 'Invalid email or password')
     );
 
     expect(mockedUserDAO.getUserByEmail).toHaveBeenCalledWith(email);
@@ -108,10 +99,8 @@ describe('login', () => {
     const email = 'test@example.com';
     const password = 'wrongPassword';
 
-    // Hash a different password to store in the mock user
     const hashedPassword = await bcrypt.hash('correctPassword', 1);
 
-    // Mock userDAO.getUserByEmail to return a user
     const user: AppUser = {
       id: 'user-uuid',
       email,
@@ -121,7 +110,7 @@ describe('login', () => {
     mockedUserDAO.getUserByEmail.mockResolvedValue(user);
 
     await expect(authService.login(email, password)).rejects.toThrow(
-      new CustomError(401, 'Invalid email or password')
+      new CustomHttpError(401, 'Invalid email or password')
     );
 
     expect(mockedUserDAO.getUserByEmail).toHaveBeenCalledWith(email);
