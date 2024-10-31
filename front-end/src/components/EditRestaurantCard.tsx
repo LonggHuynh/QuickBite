@@ -7,7 +7,6 @@ import { Restaurant } from '../models/Restaurant';
 import { CardType } from '../models/CardType';
 import { useCreateRestaurant } from '../queries/useCreateRestaurant';
 import { useEditRestaurant } from '../queries/useEditRestaurant';
-import { useGetRestaurants } from '../queries/useGetRestaurants';
 
 interface EditRestaurantCardProps {
   cardType: CardType;
@@ -39,8 +38,6 @@ const EditRestaurantCard = ({
   const { mutate: creatRestaurant } = useCreateRestaurant();
   const { mutate: editRestaurant } = useEditRestaurant();
 
-  const restaurants = useGetRestaurants().data;
-  console.log(restaurants);
   const onSubmit: SubmitHandler<Restaurant> = (data) => {
     if (cardType === CardType.Create) {
       creatRestaurant(data);

@@ -1,14 +1,18 @@
-
-
-name: Deploy to Azure App Service
+name: Backend CI/CD
 
 on:
   push:
     branches:
       - main
+    paths:
+      - 'backend/**'  
+      - '.github/workflows/backend.yml'
   pull_request:
     branches:
       - main
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend.yml'
 
 jobs:
   test-lint-and-build:
@@ -38,19 +42,20 @@ jobs:
           npm run lint
           npm run test 
           npm run build 
-          
 
       - name: Zip artifact for deployment
+        if: github.event_name == 'push'
         run: zip release.zip ./backend/dist -r
 
       - name: Upload artifact for deployment job
+        if: github.event_name == 'push'
         uses: actions/upload-artifact@v3
         with:
           name: quickbitebe
           path: release.zip
 
-
   deploy:
+    if: github.event_name == 'push'  
     runs-on: ubuntu-latest
     needs: test-lint-and-build
     steps:
@@ -63,7 +68,6 @@ jobs:
         run: |
           curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
-
       - name: 'Login via Azure CLI'
         uses: azure/login@v1
         with:
@@ -74,5 +78,3 @@ jobs:
         with:
           app-name: 'quickbitebe' 
           package: release.zip
-          
-

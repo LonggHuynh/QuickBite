@@ -2,6 +2,7 @@ import React from 'react';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useImageUpload } from '../queries/useUploadImage';
+import { toast } from 'react-toastify';
 
 interface ImageInputProps {
   image: string | undefined;
@@ -15,7 +16,7 @@ const ImageInput = ({ image, setImage, removeImage }: ImageInputProps) => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) {
-      console.log('No file selected.');
+      toast.error('No file selected.');
       return;
     }
 
@@ -33,7 +34,6 @@ const ImageInput = ({ image, setImage, removeImage }: ImageInputProps) => {
       },
     });
   };
-  console.log(image);
 
   const deleteImage = () => {
     removeImage();
