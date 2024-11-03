@@ -5,13 +5,13 @@ on:
     branches:
       - main
     paths:
-      - 'front-end/**'  
+      - 'frontend/**'  
       - '.github/workflows/frontend.yml'
   pull_request:
     branches:
       - main
     paths:
-      - 'front-end/**'
+      - 'frontend/**'
       - '.github/workflows/frontend.yml'
 
 jobs:
@@ -33,12 +33,12 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('front-end/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
       - name: npm ci, lint, build, and test
-        working-directory: front-end
+        working-directory: frontend
         run: |
           npm ci
           npm run lint
@@ -51,7 +51,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: react-build
-          path: ./front-end/build
+          path: ./frontend/build
 
   deploy:
     if: github.event_name == 'push'  

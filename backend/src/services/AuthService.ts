@@ -7,7 +7,6 @@ import { CustomHttpError } from '../errors/CustomHttpError';
 import { AppUser } from '../models/AppUser';
 
 export const signUp = async (email: string, password: string): Promise<AppUser> => {
-
     const existingUser = await getUserByEmail(email);
     if (existingUser) {
         throw new CustomHttpError(400, 'User with this email already exists');
@@ -20,12 +19,15 @@ export const signUp = async (email: string, password: string): Promise<AppUser> 
         email,
         password: hashedPassword,
         name: "User",
-
     };
 
     await createUser(user);
-    return user
+
+    const { password: _, ...userWithoutPassword } = user;
+
+    return userWithoutPassword;
 }
+
 
 export const login = async (email: string, password: string): Promise<AppUser> => {
 
@@ -34,7 +36,7 @@ export const login = async (email: string, password: string): Promise<AppUser> =
         throw new CustomHttpError(401, 'Invalid email or password');
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.password!);
     if (!isPasswordValid) {
         throw new CustomHttpError(401, 'Invalid email or password');
     }
@@ -43,7 +45,9 @@ export const login = async (email: string, password: string): Promise<AppUser> =
 }
 
 export const generateToken = (user: AppUser): string => {
-    return jwt.sign({ uid: user.id, role: 'user', ...user }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
+    const { password, ...userWithoutPassword } = user;
+
+    return jwt.sign({ uid: user.id, role: 'user', ...userWithoutPassword }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
 }
 
 

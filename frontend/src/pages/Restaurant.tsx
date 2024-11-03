@@ -11,7 +11,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import EditRestaurantCard from '../components/EditRestaurantCard';
 import EditDish from '../components/EditDishCard';
-import useUserStore from '../store/useUserStore';
+import useUserStore from '../stores/useUserStore';
 import { useGetRestaurantById } from '../queries/useGetRestaurantById';
 import { useGetDishesByRestaurantId } from '../queries/useGetDishesByRestaurantId';
 import { Dish } from '../models/Dish';

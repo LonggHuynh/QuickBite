@@ -1,8 +1,8 @@
 create table app_user
 (
-    id text not null
-        constraint customer_pk
-            primary key
+    id UUID NOT NULL PRIMARY KEY DEFAULT gen_random_uuid(),
+    email TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL
 );
 
 create table restaurant
@@ -12,9 +12,10 @@ create table restaurant
             primary key,
     name           text not null,
     logo_url       text,
-    delivery_cost  numeric default 0,
+    delivery_fee  numeric default 0,
     background_url text,
-    min_order      integer default 0
+    min_order      integer default 0,
+    owner_id UUID NOT NULL UNIQUE REFERENCES app_user(id) ON DELETE CASCADE
 );
 
 create table dish
@@ -37,7 +38,7 @@ create table app_order
     id            uuid not null
         constraint order_pk
             primary key,
-    uid           text
+    uid           UUID
         constraint app_order_app_user_id_fk
             references app_user,
     rating        integer,

@@ -1,5 +1,5 @@
 // src/dao/OrderDAO.ts
-import pool from '../config/database';
+import pool from '../configs/database';
 import { AppOrder } from '../models/AppOrder';
 import { Item } from '../models/Item';
 

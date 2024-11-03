@@ -1,5 +1,5 @@
 // src/dao/DishDAO.ts
-import pool from '../config/database';
+import pool from '../configs/database';
 import { Dish } from '../models/Dish';
 
 export const createDish = async (dish: Dish): Promise<void> => {

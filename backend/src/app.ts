@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
 
-import swaggerSpec from './config/swagger';
+import swaggerSpec from './configs/swagger';
 import authRoutes from './routes/AuthRoutes';
 import dishRoutes from './routes/DishRoutes';
 import restaurantRoutes from './routes/RestaurantRoutes';

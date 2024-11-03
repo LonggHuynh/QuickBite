@@ -1,5 +1,5 @@
 // src/dao/RestaurantDAO.ts
-import pool from '../config/database';
+import pool from '../configs/database';
 import { Restaurant } from '../models/Restaurant';
 
 export async function createRestaurant(restaurant: Restaurant): Promise<void> {

@@ -2,7 +2,7 @@ import React from 'react';
 import CartItem from './CartItem';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useCartStore } from '../store/useCartStore';
+import { useCartStore } from '../stores/useCartStore';
 
 interface BasketProps {
   editable: boolean;

@@ -1,4 +1,3 @@
-// src/controllers/authController.ts
 import { Request, Response, NextFunction } from "express";
 import { plainToInstance } from "class-transformer";
 

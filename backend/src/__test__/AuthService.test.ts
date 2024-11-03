@@ -33,11 +33,9 @@ describe('signUp', () => {
     expect(result.id).toBe('test-uuid');
     expect(result.email).toBe(email);
     expect(result.name).toBe('User');
-    expect(typeof result.password).toBe('string');
-    expect(result.password.length).toBeGreaterThan(0);
+    expect(result.password).toBeUndefined();
 
     expect(mockedUserDAO.getUserByEmail).toHaveBeenCalledWith(email);
-    expect(mockedUserDAO.createUser).toHaveBeenCalledWith(result);
   });
 
   it('should throw an error if the user already exists', async () => {
@@ -122,7 +120,6 @@ describe('generateToken', () => {
     const user: AppUser = {
       id: 'user-uuid',
       email: 'test@example.com',
-      password: 'hashedPassword123',
       name: 'Test User',
     };
 
@@ -136,6 +133,23 @@ describe('generateToken', () => {
     expect(decoded.role).toBe('user');
     expect(decoded.email).toBe(user.email);
     expect(decoded.name).toBe(user.name);
-    expect(decoded.password).toBe(user.password);
+  });
+
+  it('should remove password from JWT', () => {
+    const user: AppUser = {
+      id: 'user-uuid',
+      email: 'test@example.com',
+      name: 'Test User',
+      password: '123428'
+    };
+
+    process.env.JWT_SECRET = 'test-secret';
+
+    const token = authService.generateToken(user);
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as jwt.JwtPayload;
+
+    expect(decoded.password).toBeUndefined();
+
   });
 });

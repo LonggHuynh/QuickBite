@@ -1,4 +1,4 @@
-import pool from '../config/database';
+import pool from '../configs/database';
 import { AppUser } from '../models/AppUser';
 
 export async function createUser(user: AppUser): Promise<void> {

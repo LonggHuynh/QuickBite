@@ -4,12 +4,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 import EditRestaurantCard from '../EditRestaurantCard';
 import { Box } from '@mui/material';
-import useUserStore from '../../store/useUserStore';
+import useUserStore from '../../stores/useUserStore';
 import LoginModal from './LoginModal';
 import SignupModal from './SignupModal';
 import { useGetRestaurantById } from '../../queries/useGetRestaurantById';
 import { CardType } from '../../models/CardType';
-import { useCartStore } from '../../store/useCartStore';
+import { useCartStore } from '../../stores/useCartStore';
 
 const Navbar = () => {
   const setUser = useUserStore((state) => state.setUser);

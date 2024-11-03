@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import api from '../api';
 import { User } from '../models/User';
 
-import useUserStore from '../store/useUserStore';
+import useUserStore from '../stores/useUserStore';
 import { LoginData } from '../models/LoginData';
 import { JwtToUser } from '../utils';
 

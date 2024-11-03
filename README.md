@@ -1,39 +1,57 @@
 # QuickBite: Food ordering application
-
-## Description
 Food ordering app, with multiple restaurants. Users can create a restaurant, adding dishes, and making orders. 
 
-
-## Business model
+# Business model
 ![plot](./model.png)
-## Tech stack
 
+# Tech stack
 - NodeJS/Express
 - Postgres
-- Javascript
-- ReactJS (Hooks, Routers, Redux)
-- HTML/CSS/TailwindCSS
-- Docker
+- TypeScript
+- ReactJS (Query, Zudstand)
 
-
-## Run locally with Docker
-Alternatively you can use Docker to run the application. This approach is simpler, but the application still needs your service account from Firebase.
-
-### Environment variables.
+# Run locally
+## Frontend
+### Build environment variables
 | Variable Name           | Description                                                                                                 |
 |-------------------------|-------------------------------------------------------------------------------------------------------------|
-| PG_PASSWORD            | Password of for the PostgresSQL server (You can set whatever here as long as it is longer than 6 characters) |
-| CREDS                     | Service account of Firebase server |
+| REACT_APP_API_URL            | URL of the backend (if not set, defaulting to '/api' in case of reverse proxy) |
 
+To start the frontend, use
 
-Run in development mode 
 ```
-docker compose up
-```
-
-Run in production mode
-```
-docker compose -f docker-compose.prod.yml up
+npm start
 ```
 
+The frontend starts at port 3000
 
+## Backend
+### Environment variables
+| Variable Name           | Description                                                                                                 |
+|-------------------------|-------------------------------------------------------------------------------------------------------------|
+| JWT_SECRET            | Secret used in to generate signatures for JWT (SHA256)  |
+| DATABASE_URL          | URL of the Postgres database                                                                                  |
+| PORT                  | Port number on which the backend server will run, default 5000                                                              |
+| AZURE_STORAGE_ACCOUNT_NAME | Azure Storage account name                                                                               |
+| AZURE_CONTAINER_NAME  | Azure Storage container name                                                                                  |
+| AZURE_STORAGE_CONNECTION_STRING | Connection string for Azure Storage                                                                 |
+
+To run the backend, use
+
+```
+npm run dev
+```
+Swagger server starts at http://localhost:5000/api-docs
+
+# Running Tests
+To run tests for the backend, use
+
+```
+npm run test
+```
+
+or with coverage
+
+```
+npm run test -- --coverage
+```

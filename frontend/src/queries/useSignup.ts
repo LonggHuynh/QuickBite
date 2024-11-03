@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import useUserStore from '../store/useUserStore';
+import useUserStore from '../stores/useUserStore';
 import api from '../api';
 import { User } from '../models/User';
 

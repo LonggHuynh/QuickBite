@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCartStore } from '../store/useCartStore';
+import { useCartStore } from '../stores/useCartStore';
 import { Item } from '../models/Item';
 
 interface CartItemProps {
